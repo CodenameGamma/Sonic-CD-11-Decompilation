@@ -1,6 +1,7 @@
 #include "RetroEngine.hpp"
 #include <cmath>
 
+
 ObjectScript objectScriptList[OBJECT_COUNT];
 ScriptPtr functionScriptList[FUNCTION_COUNT];
 
@@ -3735,12 +3736,23 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                 break;
             case FUNC_CHATVSCONNECTOR:
                 opcodeSize = 0;
+                
                 // params: scriptEng.Operands[0],scriptEng.Operands[1],scriptEng.Operands[2],scriptEng.Operands[3]
                 if (scriptEng.operands[0] == 1) {
-                    printf("Called from a script!!! -- Is 1\n");
+                    if (ChatShove) {
+                        scriptEng.checkResult = 1;
+                        ChatShove = false;
+                        printf("Did and ResetShove\n");
+
+                    }
+                    else {
+                        //Can't do it now. 
+                        scriptEng.checkResult = 0;
+                        printf("Don't do Shove\n");
+                    }
                 }
                 else {
-                    printf("Called from a script!!! -- Else \n");
+                    printf("Function Not Programmed.!!!\n");
                 }
 #if RETRO_USE_HAPTICS
             case FUNC_HAPTICEFFECT:

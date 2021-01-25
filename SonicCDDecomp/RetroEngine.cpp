@@ -302,7 +302,6 @@ void RetroEngine::Init()
     skipFrameIndex   = refreshRate / lower;
 }
 bool GameReady = false;
-bool DoShove   = false;
 void RetroEngine::ChatVSMain()
 {
 
@@ -348,10 +347,18 @@ __declspec(dllexport) bool DoThing(int id)
     if (id == 0) {
         return GameReady;
     }
-    if (id == 1) {
-        return DoShove;
-    }
+
     return false; 
+}
+
+extern "C" __declspec(dllexport) bool Shove()
+{
+    // Return if Game is running.
+    if (ChatShove == false) {
+        ChatShove = true;
+        return true;
+    }
+    return false;
 }
 void RetroEngine::Run()
 {

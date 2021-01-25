@@ -190,20 +190,14 @@ namespace ChatVSSonicCD
 
             if (msg.Contains("!shove"))
             {
-                Commands.Enqueue(() =>
-                {
-                    if(DoThing(0))
-                    {
-
-                        Console.WriteLine("GameIsReady\n");
-                    }
-                    else
-                    {
-                        Console.WriteLine("GameNOTReady\n");
-                    }
-
-                    
-                });
+               if(Shove())
+                 {
+                    Console.WriteLine("DidShove\n");
+                  }
+                  else
+                  {
+                       Console.WriteLine("Can't do Shove\n");
+                  }
             }
 
         }
@@ -313,6 +307,10 @@ namespace ChatVSSonicCD
         [DllImport("ChatVSSonicCD.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool DoThing(int id);
+
+        [DllImport("Sonic CD_64.exe", CharSet = CharSet.Ansi, EntryPoint = "Shove", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool Shove();
 
     }
 }

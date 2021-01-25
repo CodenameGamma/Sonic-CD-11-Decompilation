@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
-
+static bool ChatShove = false;
 // ================
 // STANDARD TYPES
 // ================
@@ -225,6 +225,7 @@ extern bool engineDebugMode;
 #include "Userdata.hpp"
 #include "Debug.hpp"
 
+
 class RetroEngine
 {
 public:
@@ -235,6 +236,7 @@ public:
         else
             gamePlatform = "Mobile";
     }
+    
 
     bool usingDataFile = false;
     bool usingBytecode = false;
