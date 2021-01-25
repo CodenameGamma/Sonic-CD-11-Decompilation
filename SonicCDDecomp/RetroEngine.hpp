@@ -271,7 +271,7 @@ public:
 
     void Init();
     void Run();
-
+    void ChatVSMain();
     bool LoadGameConfig(const char *Filepath);
 
     int callbackMessage = 0;

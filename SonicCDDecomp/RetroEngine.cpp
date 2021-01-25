@@ -289,6 +289,24 @@ void RetroEngine::Init()
     renderFrameIndex = targetRefreshRate / lower;
     skipFrameIndex   = refreshRate / lower;
 }
+void RetroEngine::ChatVSMain()
+{
+
+    switch (gameMode) {
+        case ENGINE_DEVMENU: break;
+        case ENGINE_MAINGAME: break;
+        case ENGINE_INITDEVMENU: break;
+        case ENGINE_EXITGAME: break;
+        case ENGINE_SCRIPTERROR: break;
+        case ENGINE_ENTER_HIRESMODE: break;
+        case ENGINE_EXIT_HIRESMODE: break;
+        case ENGINE_PAUSE: break;
+        case ENGINE_WAIT: break;
+        case ENGINE_VIDEOWAIT:
+
+        default: break;
+    }
+}
 
 void RetroEngine::Run()
 {
@@ -305,7 +323,7 @@ void RetroEngine::Run()
         frameEnd = SDL_GetTicks();
 
         running = processEvents();
-
+        ChatVSMain();
         for (int s = 0; s < gameSpeed; ++s) {
             ProcessInput();
 

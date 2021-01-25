@@ -425,6 +425,7 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                              FunctionInfo("SetLeaderboard", 2),
                              FunctionInfo("LoadOnlineMenu", 1),
                              FunctionInfo("EngineCallback", 1),
+                             FunctionInfo("ChatVsConnector", 1),
                              FunctionInfo("HapticEffect", 4) };
 
 AliasInfo aliases[0x80] = { AliasInfo("true", "1"),
@@ -842,6 +843,7 @@ enum ScrFunction {
     FUNC_SETLEADERBOARD,
     FUNC_LOADONLINEMENU,
     FUNC_ENGINECALLBACK,
+    FUNC_CHATVSCONNECTOR,
     FUNC_HAPTICEFFECT,
     FUNC_MAX_CNT
 };
@@ -3731,6 +3733,15 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                 opcodeSize = 0;
                 Engine.Callback(scriptEng.operands[0]);
                 break;
+            case FUNC_CHATVSCONNECTOR:
+                opcodeSize = 0;
+                // params: scriptEng.Operands[0],scriptEng.Operands[1],scriptEng.Operands[2],scriptEng.Operands[3]
+                if (scriptEng.operands[0] == 1) {
+                    printf("Called from a script!!! -- Is 1\n");
+                }
+                else {
+                    printf("Called from a script!!! -- Else \n");
+                }
 #if RETRO_USE_HAPTICS
             case FUNC_HAPTICEFFECT:
                 opcodeSize = 0;
