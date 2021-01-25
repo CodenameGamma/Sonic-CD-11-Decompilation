@@ -270,3 +270,16 @@ dependencies/all/libogg/win32/VS2015/Win32/ReleaseDLL/libogg.iobj
 dependencies/all/libogg/win32/VS2015/Win32/ReleaseDLL/libogg.exp
 dependencies/all/libogg/win32/VS2015/Win32/ReleaseDLL/libogg.dll.recipe
 dependencies/all/libogg/win32/VS2015/Win32/ReleaseDLL/libogg.dll
+dependencies/all/dependencies.txt
+dependencies/mac/cocoaHelpers.hpp
+dependencies/mac/cocoaHelpers.mm
+dependencies/mac/dependencies.txt
+dependencies/mac/Info.plist
+dependencies/windows-uwp/dependencies.txt
+dependencies/windows-uwp/WinRTIncludes.hpp
+dependencies/windows/dependencies.txt
+dependencies/windows/dependencies.txt
+dependencies/mac/Info.plist
+dependencies/mac/dependencies.txt
+dependencies/mac/cocoaHelpers.mm
+dependencies/mac/cocoaHelpers.hpp

@@ -1,8 +1,12 @@
 #include "RetroEngine.hpp"
+
+#include <cstdio>
+#include <random>
 #if RETRO_PLATFORM == RETRO_UWP
 #include <winrt/base.h>
 #include <winrt/Windows.Storage.h>
 #endif
+//#include <libloaderapi.h>
 
 bool usingCWD        = false;
 bool engineDebugMode = false;
@@ -249,6 +253,13 @@ bool processEvents()
 
 void RetroEngine::Init()
 {
+   /* HMODULE hm = LoadLibraryA("ChatVSSonicCD.dll");
+    if (hm == NULL) {
+        
+        printf("ChatVSSonicCD-DLL: Failed to load helper DLL, mod will not function!");
+        return;
+    }
+    GetProcAddress(hm, "Main")();*/
     CalculateTrigAngles();
     GenerateBlendLookupTable();
 #if RETRO_PLATFORM == RETRO_UWP
@@ -307,7 +318,14 @@ void RetroEngine::ChatVSMain()
         default: break;
     }
 }
-
+__declspec(dllexport) bool GiveItem(int item)
+{
+    if (false) {
+        
+        return true;
+    }
+    return false;
+}
 void RetroEngine::Run()
 {
     uint frameStart, frameEnd = SDL_GetTicks();
