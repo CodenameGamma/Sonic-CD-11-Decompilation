@@ -12,12 +12,32 @@ using System.Text.RegularExpressions;
 
 using System.Numerics;
 
-using System.Threading;
+using System.IO;
+using System.Windows;
+using Discord;
+
+using Newtonsoft.Json.Linq;
+using System.Reflection;
+using System.Web;
+using System.Security;
+using System.Security.Permissions;
+using System.Collections.ObjectModel;
 
 
 namespace ChatVSSonicCD
 {
-    public class ChatParse
+    /// <summary>
+    /// This class is simply a proxy for calling Init again from another AppDomain.
+    /// </summary>
+    public class InitProxy : MarshalByRefObject
+    {
+        public void Run()
+        {
+            ChatParse.Init();
+        }
+    }
+
+    public static class ChatParse
     {
         public static Random random = new Random();
         public static int RandomNumber(int min, int max)
@@ -57,7 +77,7 @@ namespace ChatVSSonicCD
 
         public static TwitchIRCClient TwitchClient = new TwitchIRCClient(ServerIP, Port, User, Key);
 
-
+        //Not Really used... 
         public static void StartChatBots()
         {
             //Debugger.Launch();
@@ -120,7 +140,11 @@ namespace ChatVSSonicCD
             }
 
         }
-
+        [DllExport(CallingConvention.Cdecl)]
+        public static void Init()
+        {
+            TwitchIRCStart();
+        }
         public static void ProcessDiscord()
         {
             //Discord.StartDiscord(MessageReceived);
@@ -163,14 +187,22 @@ namespace ChatVSSonicCD
                 Console.WriteLine("Message:{0}", msg);
             }
 
-      
+
             if (msg.Contains("!shove"))
             {
                 Commands.Enqueue(() =>
                 {
-                    
+                    if(DoThing(0))
+                    {
 
-                    Console.WriteLine("Shoved the Player!");
+                        Console.WriteLine("GameIsReady\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("GameNOTReady\n");
+                    }
+
+                    
                 });
             }
 
@@ -192,6 +224,9 @@ namespace ChatVSSonicCD
         {
             //TwitchIRCThread Tirc = new Thread(PulseTwitchIRC);
             //Tirc.Start();
+            Console.Write("Starting ChatBots! \n");
+            //Load Settings.
+            LoadINIFile(AppDomain.CurrentDomain.BaseDirectory);
 
             if (EnableTwitchSupport)
             {
@@ -275,8 +310,9 @@ namespace ChatVSSonicCD
 
         }
 
-        
+        [DllImport("ChatVSSonicCD.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool DoThing(int id);
+
     }
-    //public static extern void DoThing(int id);
-    //[DllImport("ChatVSSonicCD.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 }

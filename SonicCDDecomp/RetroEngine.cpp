@@ -6,6 +6,7 @@
 #include <winrt/base.h>
 #include <winrt/Windows.Storage.h>
 #endif
+#include <windows.h>
 //#include <libloaderapi.h>
 
 bool usingCWD        = false;
@@ -253,13 +254,13 @@ bool processEvents()
 
 void RetroEngine::Init()
 {
-   /* HMODULE hm = LoadLibraryA("ChatVSSonicCD.dll");
+    HMODULE hm = LoadLibraryA("ChatVSSonicCD.dll");
     if (hm == NULL) {
         
         printf("ChatVSSonicCD-DLL: Failed to load helper DLL, mod will not function!");
         return;
     }
-    GetProcAddress(hm, "Main")();*/
+    GetProcAddress(hm, "Init")(); //Import the Exported Fucnction from Our DLL
     CalculateTrigAngles();
     GenerateBlendLookupTable();
 #if RETRO_PLATFORM == RETRO_UWP
@@ -300,31 +301,57 @@ void RetroEngine::Init()
     renderFrameIndex = targetRefreshRate / lower;
     skipFrameIndex   = refreshRate / lower;
 }
+bool GameReady = false;
+bool DoShove   = false;
 void RetroEngine::ChatVSMain()
 {
 
     switch (gameMode) {
         case ENGINE_DEVMENU: break;
+            if (GameReady == true) {
+                GameReady = false;
+            }
         case ENGINE_MAINGAME: break;
+            if (GameReady == false) {
+                GameReady = true;
+            }
         case ENGINE_INITDEVMENU: break;
+            if (GameReady == true) {
+                GameReady = false;
+            }
         case ENGINE_EXITGAME: break;
+            if (GameReady == true) {
+                GameReady = false;
+            }
         case ENGINE_SCRIPTERROR: break;
         case ENGINE_ENTER_HIRESMODE: break;
         case ENGINE_EXIT_HIRESMODE: break;
         case ENGINE_PAUSE: break;
+            if (GameReady == true) {
+                GameReady = false;
+            }
         case ENGINE_WAIT: break;
+            if (GameReady == true) {
+                GameReady = false;
+            }
         case ENGINE_VIDEOWAIT:
+            if (GameReady == true) {
+                GameReady = false;
+            }
 
         default: break;
     }
 }
-__declspec(dllexport) bool GiveItem(int item)
-{
-    if (false) {
-        
-        return true;
+__declspec(dllexport) bool DoThing(int id)
+{ 
+    //Return if Game is running.
+    if (id == 0) {
+        return GameReady;
     }
-    return false;
+    if (id == 1) {
+        return DoShove;
+    }
+    return false; 
 }
 void RetroEngine::Run()
 {
